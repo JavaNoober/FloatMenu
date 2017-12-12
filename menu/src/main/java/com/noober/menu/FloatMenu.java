@@ -49,6 +49,10 @@ public class FloatMenu extends PopupWindow{
 
 	private static final int ANCHORED_GRAVITY = Gravity.TOP | Gravity.START;
 
+	/** Animation time */
+	private static final int DURATION = 200;
+
+
 	private final int DEFAULT_MENU_WIDTH;
 	private final int VERTICAL_OFFSET;
 	private int ANIM_START_OFFSET;
@@ -65,7 +69,6 @@ public class FloatMenu extends PopupWindow{
 	private boolean isPlayingAnim = false;
 	private LinearLayout menuLayout;
 	private StartPoint startPoint;
-
 	private OnItemClickListener onItemClickListener;
 
 	public enum StartPoint{
@@ -81,13 +84,13 @@ public class FloatMenu extends PopupWindow{
 
 	public FloatMenu(Context context, View view) {
 		super(context);
-//		setAnimationStyle(R.style.popwin_anim_bottom);
 		setOutsideTouchable(true);
 		setFocusable(true);
 		setBackgroundDrawable(null);
 		view.setOnTouchListener(new MenuTouchListener());
 		this.context = context;
 		this.view = view;
+
 		VERTICAL_OFFSET = Display.dip2px(context, 10);
 		DEFAULT_MENU_WIDTH = Display.dip2px(context, 180);
 		screenPoint = Display.getScreenMetrics(context);
@@ -239,6 +242,7 @@ public class FloatMenu extends PopupWindow{
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
 			setBackgroundDrawable(new BitmapDrawable());
 		}
+
 		if(clickX <= screenPoint.x / 2){
 			if(clickY + menuHeight < screenPoint.y){
 				openAnimFromTOP_LEFT();
@@ -290,7 +294,7 @@ public class FloatMenu extends PopupWindow{
 					isStartDismissAnim = true;
 					dismiss();
 				}
-			}, 500);
+			}, DURATION);
 		}
 	}
 
@@ -313,7 +317,7 @@ public class FloatMenu extends PopupWindow{
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-			if(event.getAction() == MotionEvent.ACTION_UP){
+			if(event.getAction() == MotionEvent.ACTION_DOWN){
 				clickX = (int) event.getRawX();
 				clickY = (int) event.getRawY();
 			}
@@ -341,7 +345,7 @@ public class FloatMenu extends PopupWindow{
 		startPoint = StartPoint.TOP_LEFT;
 		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
 				Animation.ABSOLUTE, ANIM_START_OFFSET, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.setAnimation(scaleAnimation);
@@ -352,7 +356,7 @@ public class FloatMenu extends PopupWindow{
 		startPoint = StartPoint.BOTTOM_LEFT;
 		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
 				Animation.ABSOLUTE, ANIM_START_OFFSET, Animation.ABSOLUTE, menuWidth);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.startAnimation(scaleAnimation);
@@ -362,7 +366,7 @@ public class FloatMenu extends PopupWindow{
 		startPoint = StartPoint.TOP_RIGHT;
 		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
 				Animation.ABSOLUTE, menuWidth - ANIM_START_OFFSET, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.startAnimation(scaleAnimation);
@@ -372,7 +376,7 @@ public class FloatMenu extends PopupWindow{
 		startPoint = StartPoint.BOTTOM_RIGHT;
 		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
 				Animation.ABSOLUTE, menuWidth - ANIM_START_OFFSET, Animation.ABSOLUTE, menuWidth);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.startAnimation(scaleAnimation);
@@ -381,7 +385,7 @@ public class FloatMenu extends PopupWindow{
 	private void closeAnimFromTOP_LEFT(){
 		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
 				Animation.ABSOLUTE, 0f, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.startAnimation(scaleAnimation);
@@ -390,7 +394,7 @@ public class FloatMenu extends PopupWindow{
 	private void closeAnimFromBOTTOM_LEFT(){
 		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
 				Animation.ABSOLUTE, 0f, Animation.ABSOLUTE, menuHeight);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.startAnimation(scaleAnimation);
@@ -399,7 +403,7 @@ public class FloatMenu extends PopupWindow{
 	private void closeAnimFromTOP_RIGHT(){
 		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
 				Animation.ABSOLUTE, menuWidth, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.startAnimation(scaleAnimation);
@@ -408,7 +412,7 @@ public class FloatMenu extends PopupWindow{
 	private void closeAnimFromBOTTOM_RIGHT(){
 		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
 				Animation.ABSOLUTE, menuWidth, Animation.ABSOLUTE, menuHeight);
-		scaleAnimation.setDuration(200); //动画持续时间
+		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.startAnimation(scaleAnimation);

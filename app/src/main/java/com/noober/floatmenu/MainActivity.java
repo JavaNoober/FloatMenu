@@ -2,11 +2,8 @@ package com.noober.floatmenu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupWindow;
 
 import com.noober.menu.FloatMenu;
 
@@ -16,11 +13,11 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		final Button button1 = (Button) findViewById(R.id.button1);
-		Button button2 = (Button) findViewById(R.id.button2);
-		Button button3 = (Button) findViewById(R.id.button3);
-		final Button button4 = (Button) findViewById(R.id.button4);
-		Button button5 = (Button) findViewById(R.id.button5);
+		final Button button1 = findViewById(R.id.button1);
+		Button button2 = findViewById(R.id.button2);
+		Button button3 = findViewById(R.id.button3);
+		final Button button4 = findViewById(R.id.button4);
+		Button button5 = findViewById(R.id.button5);
 
 //		button2.setVisibility(View.GONE);
 //		button3.setVisibility(View.GONE);
@@ -29,18 +26,19 @@ public class MainActivity extends AppCompatActivity {
 
 		final FloatMenu popupMenu1 = new FloatMenu(MainActivity.this, button1);
 		popupMenu1.inflate(R.menu.popup_menu);
-		button1.setOnClickListener(new View.OnClickListener() {
+		button1.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
-			public void onClick(View v) {
+			public boolean onLongClick(View v) {
 				popupMenu1.show();
+				return true;
 			}
 		});
+
 		final FloatMenu popupMenu2 = new FloatMenu(MainActivity.this, button2);
 		popupMenu2.inflate(R.menu.popup_menu);
 		button2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				popupMenu2.show();
 			}
 		});
