@@ -2,11 +2,13 @@ package com.noober.floatmenu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 
-import com.noober.menu.CustomPopupMenu;
+import com.noober.menu.FloatMenu;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,22 +16,26 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		final Button button1 = findViewById(R.id.button1);
-		Button button2 = findViewById(R.id.button2);
-		Button button3 = findViewById(R.id.button3);
-		final Button button4 = findViewById(R.id.button4);
-		Button button5 = findViewById(R.id.button5);
+		final Button button1 = (Button) findViewById(R.id.button1);
+		Button button2 = (Button) findViewById(R.id.button2);
+		Button button3 = (Button) findViewById(R.id.button3);
+		final Button button4 = (Button) findViewById(R.id.button4);
+		Button button5 = (Button) findViewById(R.id.button5);
 
-		final CustomPopupMenu popupMenu1 = new CustomPopupMenu(MainActivity.this, button1);
+//		button2.setVisibility(View.GONE);
+//		button3.setVisibility(View.GONE);
+//		button4.setVisibility(View.GONE);
+//		button5.setVisibility(View.GONE);
+
+		final FloatMenu popupMenu1 = new FloatMenu(MainActivity.this, button1);
 		popupMenu1.inflate(R.menu.popup_menu);
 		button1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				popupMenu1.show();
 			}
 		});
-		final CustomPopupMenu popupMenu2 = new CustomPopupMenu(MainActivity.this, button2);
+		final FloatMenu popupMenu2 = new FloatMenu(MainActivity.this, button2);
 		popupMenu2.inflate(R.menu.popup_menu);
 		button2.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 
-		final CustomPopupMenu popupMenu3 = new CustomPopupMenu(MainActivity.this, button3);
+		final FloatMenu popupMenu3 = new FloatMenu(MainActivity.this, button3);
 		popupMenu3.inflate(R.menu.popup_menu);
 		button3.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -49,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 				popupMenu3.show();
 			}
 		});
-		final CustomPopupMenu popupMenu4 = new CustomPopupMenu(MainActivity.this, button4);
+		final FloatMenu popupMenu4 = new FloatMenu(MainActivity.this, button4);
 		popupMenu4.inflate(R.menu.popup_menu);
 		button4.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 				popupMenu4.show();
 			}
 		});
-		final CustomPopupMenu popupMenu5 = new CustomPopupMenu(MainActivity.this, button5);
+		final FloatMenu popupMenu5 = new FloatMenu(MainActivity.this, button5);
 		popupMenu5.inflate(R.menu.popup_menu);
 		button5.setOnClickListener(new View.OnClickListener() {
 			@Override
