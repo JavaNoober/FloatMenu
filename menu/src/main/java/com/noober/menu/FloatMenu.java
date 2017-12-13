@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.InflateException;
@@ -51,13 +52,9 @@ public class FloatMenu extends PopupWindow{
 
 	private static final int ANCHORED_GRAVITY = Gravity.TOP | Gravity.START;
 
-	/** Animation time */
-	private static final int DURATION = 200;
-
 
 	private final int DEFAULT_MENU_WIDTH;
 	private final int VERTICAL_OFFSET;
-	private int ANIM_START_OFFSET;
 
 	private Context context;
 	private List<String> menuItemList;
@@ -67,18 +64,10 @@ public class FloatMenu extends PopupWindow{
 	private int clickY;
 	private int menuWidth;
 	private int menuHeight;
-	private boolean isStartDismissAnim = false;
 	private boolean isPlayingAnim = false;
 	private LinearLayout menuLayout;
-	private StartPoint startPoint;
 	private OnItemClickListener onItemClickListener;
 
-	public enum StartPoint{
-		TOP_LEFT,
-		TOP_RIGHT,
-		BOTTOM_LEFT,
-		BOTTOM_RIGHT
-	}
 
 	public interface OnItemClickListener {
 		void onClick(View v, int position);
@@ -122,11 +111,11 @@ public class FloatMenu extends PopupWindow{
 		generateLayout(itemWidth);
 	}
 
-	public void inflate(String... items) {
-		inflate(DEFAULT_MENU_WIDTH, items);
+	public void items(String... items) {
+		items(DEFAULT_MENU_WIDTH, items);
 	}
 
-	public void inflate(int itemWidth, String... items) {
+	public void items(int itemWidth, String... items) {
 		menuItemList = Arrays.asList(items);
 		generateLayout(itemWidth);
 	}
@@ -171,7 +160,6 @@ public class FloatMenu extends PopupWindow{
 		menuLayout.measure(width,height);
 		menuWidth = menuLayout.getMeasuredWidth();
 		menuHeight = menuLayout.getMeasuredHeight();
-		ANIM_START_OFFSET = menuWidth / 5;
 		setContentView(menuLayout);
 		setWidth(menuWidth);
 		setHeight(menuHeight);
@@ -260,7 +248,6 @@ public class FloatMenu extends PopupWindow{
 		if(isShowing() || isPlayingAnim){
 			return;
 		}
-		isStartDismissAnim = false;
 		//it is must ,other wise 'setOutsideTouchable' will not work under Android5.0
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
 			setBackgroundDrawable(new BitmapDrawable());
@@ -268,58 +255,31 @@ public class FloatMenu extends PopupWindow{
 
 		if(clickX <= screenPoint.x / 2){
 			if(clickY + menuHeight < screenPoint.y){
-				openAnimFromTOP_LEFT();
+				setAnimationStyle(R.style.Animation_top_left);
 				showAtLocation(view, ANCHORED_GRAVITY, clickX ,
 						clickY + VERTICAL_OFFSET);
 			}else {
-				openAnimFromBOTTOM_LEFT();
-				final int[] location = new int[2];
-				view.getLocationOnScreen(location);
+				setAnimationStyle(R.style.Animation_bottom_left);
 				showAtLocation(view, ANCHORED_GRAVITY, clickX ,
 						clickY - menuHeight - VERTICAL_OFFSET);
 			}
 		}else {
 			if(clickY + menuHeight < screenPoint.y){
-				openAnimFromTOP_RIGHT();
+				setAnimationStyle(R.style.Animation_top_right);
 				showAtLocation(view, ANCHORED_GRAVITY,
 						clickX - menuWidth ,
 						clickY + VERTICAL_OFFSET);
 			}else {
-				openAnimFromBOTTOM_RIGHT();
+				setAnimationStyle(R.style.Animation_bottom_right);
 				showAtLocation(view, ANCHORED_GRAVITY,
 						clickX - menuWidth,
 						clickY - menuHeight - VERTICAL_OFFSET);
+
 			}
 		}
 
 	}
 
-	@Override
-	public void dismiss() {
-		if(!isShowing() || isPlayingAnim){
-			return;
-		}
-		if(isStartDismissAnim){
-			super.dismiss();
-		}else {
-			if(startPoint == StartPoint.TOP_LEFT){
-				closeAnimFromTOP_LEFT();
-			}else if(startPoint == StartPoint.TOP_RIGHT){
-				closeAnimFromTOP_RIGHT();
-			}else if(startPoint == StartPoint.BOTTOM_RIGHT){
-				closeAnimFromBOTTOM_RIGHT();
-			}else if(startPoint == StartPoint.BOTTOM_LEFT){
-				closeAnimFromBOTTOM_LEFT();
-			}
-			new Handler().postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					isStartDismissAnim = true;
-					dismiss();
-				}
-			}, DURATION);
-		}
-	}
 
 	@Override
 	public void setOnDismissListener(OnDismissListener onDismissListener) {
@@ -362,88 +322,6 @@ public class FloatMenu extends PopupWindow{
 				onItemClickListener.onClick(v, position);
 			}
 		}
-	}
-
-	//open animation can't use menuLayout.startAnimation() or scaleAnimation.start(),other wise it may not work
-	private void openAnimFromTOP_LEFT(){
-		startPoint = StartPoint.TOP_LEFT;
-		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
-				Animation.ABSOLUTE, ANIM_START_OFFSET, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.setAnimation(scaleAnimation);
-		scaleAnimation.startNow();
-	}
-
-	private void openAnimFromBOTTOM_LEFT(){
-		startPoint = StartPoint.BOTTOM_LEFT;
-		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
-				Animation.ABSOLUTE, ANIM_START_OFFSET, Animation.ABSOLUTE, menuWidth);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.setAnimation(scaleAnimation);
-		scaleAnimation.startNow();
-	}
-
-	private void openAnimFromTOP_RIGHT(){
-		startPoint = StartPoint.TOP_RIGHT;
-		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
-				Animation.ABSOLUTE, menuWidth - ANIM_START_OFFSET, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.setAnimation(scaleAnimation);
-		scaleAnimation.startNow();
-	}
-
-	private void openAnimFromBOTTOM_RIGHT(){
-		startPoint = StartPoint.BOTTOM_RIGHT;
-		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
-				Animation.ABSOLUTE, menuWidth - ANIM_START_OFFSET, Animation.ABSOLUTE, menuWidth);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.setAnimation(scaleAnimation);
-		scaleAnimation.startNow();
-	}
-
-	//close animation must use menuLayout.startAnimation(),other wise it may not work
-	private void closeAnimFromTOP_LEFT(){
-		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
-				Animation.ABSOLUTE, 0f, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.startAnimation(scaleAnimation);
-	}
-
-	private void closeAnimFromBOTTOM_LEFT(){
-		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
-				Animation.ABSOLUTE, 0f, Animation.ABSOLUTE, menuHeight);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.startAnimation(scaleAnimation);
-	}
-
-	private void closeAnimFromTOP_RIGHT(){
-		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
-				Animation.ABSOLUTE, menuWidth, Animation.ABSOLUTE, 0f);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.startAnimation(scaleAnimation);
-	}
-
-	private void closeAnimFromBOTTOM_RIGHT(){
-		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
-				Animation.ABSOLUTE, menuWidth, Animation.ABSOLUTE, menuHeight);
-		scaleAnimation.setDuration(DURATION); //动画持续时间
-		scaleAnimation.setFillAfter(true);
-		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.startAnimation(scaleAnimation);
 	}
 
 	class AnimationListener implements Animation.AnimationListener{

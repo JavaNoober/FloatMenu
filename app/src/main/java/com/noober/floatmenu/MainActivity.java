@@ -1,75 +1,56 @@
 package com.noober.floatmenu;
 
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.noober.menu.FloatMenu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+	private Point point = new Point();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		final Button button1 = (Button) findViewById(R.id.button1);
-		Button button2 = (Button) findViewById(R.id.button2);
-		Button button3 = (Button) findViewById(R.id.button3);
-		final Button button4 = (Button) findViewById(R.id.button4);
-		Button button5 = (Button) findViewById(R.id.button5);
+		ListView listView = findViewById(R.id.listview);
+		List<String> itemList = new ArrayList<>();
+		for (int i = 0; i < 20; i++) {
+			itemList.add("菜单" + i);
+		}
 
-//		button2.setVisibility(View.GONE);
-//		button3.setVisibility(View.GONE);
-//		button4.setVisibility(View.GONE);
-//		button5.setVisibility(View.GONE);
+		ArrayAdapter<String> myAdapter = new ArrayAdapter<>(
+				MainActivity.this, android.R.layout.simple_list_item_1, itemList);
+		listView.setAdapter(myAdapter);
 
-		final FloatMenu popupMenu1 = new FloatMenu(MainActivity.this, button1);
-		popupMenu1.inflate(R.menu.popup_menu);
-		button1.setOnLongClickListener(new View.OnLongClickListener() {
+		final FloatMenu floatMenu = new FloatMenu(MainActivity.this);
+		floatMenu.items("菜单1", "菜单2", "菜单3");
+
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public boolean onLongClick(View v) {
-				popupMenu1.show();
-				return true;
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Log.e("onItemClick", view.getVisibility() + "  " + position);
+				floatMenu.show(point);
 			}
 		});
+	}
 
-		final FloatMenu popupMenu2 = new FloatMenu(MainActivity.this, button2);
-		popupMenu2.inflate(R.menu.popup_menu);
-		button2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				popupMenu2.show();
-			}
-		});
-
-
-		final FloatMenu popupMenu3 = new FloatMenu(MainActivity.this, button3);
-		popupMenu3.inflate(R.menu.popup_menu);
-		button3.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				popupMenu3.show();
-			}
-		});
-		final FloatMenu popupMenu4 = new FloatMenu(MainActivity.this, button4);
-		popupMenu4.inflate(R.menu.popup_menu);
-		button4.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				popupMenu4.show();
-			}
-		});
-		final FloatMenu popupMenu5 = new FloatMenu(MainActivity.this, button5);
-		popupMenu5.inflate(R.menu.popup_menu);
-		button5.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				popupMenu5.show();
-			}
-		});
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if(ev.getAction() == MotionEvent.ACTION_DOWN){
+			point.x = (int) ev.getRawX();
+			point.y = (int) ev.getRawY();
+		}
+		return super.dispatchTouchEvent(ev);
 	}
 }
