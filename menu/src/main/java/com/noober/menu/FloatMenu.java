@@ -1,6 +1,7 @@
 package com.noober.menu;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
@@ -30,6 +31,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -82,6 +84,10 @@ public class FloatMenu extends PopupWindow{
 		void onClick(View v, int position);
 	}
 
+	public FloatMenu(Activity activity){
+		this(activity, activity.findViewById(android.R.id.content));
+	}
+
 	public FloatMenu(Context context, View view) {
 		super(context);
 		setOutsideTouchable(true);
@@ -90,7 +96,6 @@ public class FloatMenu extends PopupWindow{
 		view.setOnTouchListener(new MenuTouchListener());
 		this.context = context;
 		this.view = view;
-
 		VERTICAL_OFFSET = Display.dip2px(context, 10);
 		DEFAULT_MENU_WIDTH = Display.dip2px(context, 180);
 		screenPoint = Display.getScreenMetrics(context);
@@ -114,7 +119,19 @@ public class FloatMenu extends PopupWindow{
 		} finally {
 			if (parser != null) parser.close();
 		}
+		generateLayout(itemWidth);
+	}
 
+	public void inflate(String... items) {
+		inflate(DEFAULT_MENU_WIDTH, items);
+	}
+
+	public void inflate(int itemWidth, String... items) {
+		menuItemList = Arrays.asList(items);
+		generateLayout(itemWidth);
+	}
+
+	private void generateLayout(int itemWidth) {
 		menuLayout = new LinearLayout(context);
 		menuLayout.setBackgroundColor(Color.WHITE);
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
@@ -233,6 +250,12 @@ public class FloatMenu extends PopupWindow{
 		a.recycle();
 	}
 
+	public void show(Point point){
+		clickX = point.x;
+		clickY = point.y;
+		show();
+	}
+
 	public void show(){
 		if(isShowing() || isPlayingAnim){
 			return;
@@ -334,13 +357,14 @@ public class FloatMenu extends PopupWindow{
 
 		@Override
 		public void onClick(View v) {
+			dismiss();
 			if(onItemClickListener != null){
 				onItemClickListener.onClick(v, position);
 			}
 		}
 	}
 
-
+	//open animation can't use menuLayout.startAnimation() or scaleAnimation.start(),other wise it may not work
 	private void openAnimFromTOP_LEFT(){
 		startPoint = StartPoint.TOP_LEFT;
 		ScaleAnimation scaleAnimation = new ScaleAnimation(0f, 1f, 0f, 1f,
@@ -349,7 +373,7 @@ public class FloatMenu extends PopupWindow{
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
 		menuLayout.setAnimation(scaleAnimation);
-		scaleAnimation.start();
+		scaleAnimation.startNow();
 	}
 
 	private void openAnimFromBOTTOM_LEFT(){
@@ -359,7 +383,8 @@ public class FloatMenu extends PopupWindow{
 		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.startAnimation(scaleAnimation);
+		menuLayout.setAnimation(scaleAnimation);
+		scaleAnimation.startNow();
 	}
 
 	private void openAnimFromTOP_RIGHT(){
@@ -369,7 +394,8 @@ public class FloatMenu extends PopupWindow{
 		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.startAnimation(scaleAnimation);
+		menuLayout.setAnimation(scaleAnimation);
+		scaleAnimation.startNow();
 	}
 
 	private void openAnimFromBOTTOM_RIGHT(){
@@ -379,9 +405,11 @@ public class FloatMenu extends PopupWindow{
 		scaleAnimation.setDuration(DURATION); //动画持续时间
 		scaleAnimation.setFillAfter(true);
 		scaleAnimation.setAnimationListener(new AnimationListener());
-		menuLayout.startAnimation(scaleAnimation);
+		menuLayout.setAnimation(scaleAnimation);
+		scaleAnimation.startNow();
 	}
 
+	//close animation must use menuLayout.startAnimation(),other wise it may not work
 	private void closeAnimFromTOP_LEFT(){
 		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
 				Animation.ABSOLUTE, 0f, Animation.ABSOLUTE, 0f);
