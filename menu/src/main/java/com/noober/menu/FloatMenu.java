@@ -10,10 +10,8 @@ import android.graphics.Outline;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.InflateException;
@@ -21,8 +19,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -64,7 +60,6 @@ public class FloatMenu extends PopupWindow{
 	private int clickY;
 	private int menuWidth;
 	private int menuHeight;
-	private boolean isPlayingAnim = false;
 	private LinearLayout menuLayout;
 	private OnItemClickListener onItemClickListener;
 
@@ -245,7 +240,7 @@ public class FloatMenu extends PopupWindow{
 	}
 
 	public void show(){
-		if(isShowing() || isPlayingAnim){
+		if(isShowing()){
 			return;
 		}
 		//it is must ,other wise 'setOutsideTouchable' will not work under Android5.0
@@ -256,25 +251,18 @@ public class FloatMenu extends PopupWindow{
 		if(clickX <= screenPoint.x / 2){
 			if(clickY + menuHeight < screenPoint.y){
 				setAnimationStyle(R.style.Animation_top_left);
-				showAtLocation(view, ANCHORED_GRAVITY, clickX ,
-						clickY + VERTICAL_OFFSET);
+				showAtLocation(view, ANCHORED_GRAVITY, clickX , clickY + VERTICAL_OFFSET);
 			}else {
 				setAnimationStyle(R.style.Animation_bottom_left);
-				showAtLocation(view, ANCHORED_GRAVITY, clickX ,
-						clickY - menuHeight - VERTICAL_OFFSET);
+				showAtLocation(view, ANCHORED_GRAVITY, clickX , clickY - menuHeight - VERTICAL_OFFSET);
 			}
 		}else {
 			if(clickY + menuHeight < screenPoint.y){
 				setAnimationStyle(R.style.Animation_top_right);
-				showAtLocation(view, ANCHORED_GRAVITY,
-						clickX - menuWidth ,
-						clickY + VERTICAL_OFFSET);
+				showAtLocation(view, ANCHORED_GRAVITY, clickX - menuWidth , clickY + VERTICAL_OFFSET);
 			}else {
 				setAnimationStyle(R.style.Animation_bottom_right);
-				showAtLocation(view, ANCHORED_GRAVITY,
-						clickX - menuWidth,
-						clickY - menuHeight - VERTICAL_OFFSET);
-
+				showAtLocation(view, ANCHORED_GRAVITY, clickX - menuWidth, clickY - menuHeight - VERTICAL_OFFSET);
 			}
 		}
 
@@ -321,24 +309,6 @@ public class FloatMenu extends PopupWindow{
 			if(onItemClickListener != null){
 				onItemClickListener.onClick(v, position);
 			}
-		}
-	}
-
-	class AnimationListener implements Animation.AnimationListener{
-
-		@Override
-		public void onAnimationStart(Animation animation) {
-			isPlayingAnim = true;
-		}
-
-		@Override
-		public void onAnimationEnd(Animation animation) {
-			isPlayingAnim = false;
-		}
-
-		@Override
-		public void onAnimationRepeat(Animation animation) {
-
 		}
 	}
 }
