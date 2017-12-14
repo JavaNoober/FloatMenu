@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.noober.floatmenu.MainActivity">
+
+    <Button
+        android:id="@+id/btn_fun1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:text="直接传入items的方式创建menu"
+        />
+
+    <Button
+        android:id="@+id/btn_fun2"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="17sp"
+        android:layout_height="wrap_content"
+        android:text="创建menu资源文件的方式创建menu"
+        />
 
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
