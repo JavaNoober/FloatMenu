@@ -9,39 +9,28 @@
         android:right="2dp"
         android:bottom="2dp">
         <shape android:shape="rectangle" >
-
             <gradient
-                android:angle="270"
-                android:endColor="#D4D4D4"
-                android:startColor="#D4D4D4" />
+                android:gradientRadius="400"
+                android:type="radial"
+                android:endColor="#f5f5f5"
+                android:startColor="#E8E8E8" />
 
-            <corners
-                android:bottomLeftRadius="6dip"
-                android:bottomRightRadius="6dip"
-                android:topLeftRadius="6dip"
-                android:topRightRadius="6dip" />
         </shape>
     </item>
 
     <!-- 背景部分 -->
     <!-- 形象的表达：bottom代表背景部分在上边缘超出阴影的高度，right代表背景部分在左边超出阴影的宽度（相对应的offset） -->
-    <item
-        android:left="3dp"
-        android:top="3dp"
-        android:right="3dp"
-        android:bottom="5dp">
-        <shape android:shape="rectangle" >
+    <!--<item-->
+        <!--android:left="3dp"-->
+        <!--android:top="3dp"-->
+        <!--android:right="3dp"-->
+        <!--android:bottom="3dp">-->
+        <!--<shape android:shape="rectangle" >-->
 
-            <gradient
-                android:angle="270"
-                android:endColor="#FFFFFF"
-                android:startColor="#FFFFFF" />
-
-            <corners
-                android:bottomLeftRadius="6dip"
-                android:bottomRightRadius="6dip"
-                android:topLeftRadius="6dip"
-                android:topRightRadius="6dip" />
-        </shape>
-    </item>
+            <!--<gradient-->
+                <!--android:angle="270"-->
+                <!--android:endColor="#00FFFFFF"-->
+                <!--android:startColor="#FFFFFF" />-->
+        <!--</shape>-->
+    <!--</item>-->
 </layer-list>
