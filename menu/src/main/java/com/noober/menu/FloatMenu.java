@@ -5,15 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Outline;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -22,8 +16,6 @@ import android.view.Gravity;
 import android.view.InflateException;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -35,8 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static android.graphics.drawable.GradientDrawable.RECTANGLE;
 
 /**
  * Created by xiaoqi on 2017/12/11.
@@ -124,22 +114,8 @@ public class FloatMenu extends PopupWindow{
 
 	private void generateLayout(int itemWidth) {
 		menuLayout = new LinearLayout(context);
-//		menuLayout.setBackgroundColor(Color.WHITE);
-//		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-//			menuLayout.setOutlineProvider(new ViewOutlineProvider() {
-//				@Override
-//				public void getOutline(View view, Outline outline) {
-//					if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-//						outline.setRect(0, 0, view.getWidth(), view.getHeight());
-//					}
-//				}
-//			});
-//			menuLayout.setElevation(Display.dip2px(context, 10));
-//			menuLayout.setTranslationZ(Display.dip2px(context, 10));
-//		}
-//		menuLayout.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_shadow));
+		menuLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_shadow));
 		menuLayout.setOrientation(LinearLayout.VERTICAL);
-
 		int padding = Display.dip2px(context, 12);
 		for(int i = 0; i < menuItemList.size(); i ++){
 			TextView textView = new TextView(context);
@@ -161,28 +137,9 @@ public class FloatMenu extends PopupWindow{
 		menuLayout.measure(width,height);
 		menuWidth = menuLayout.getMeasuredWidth();
 		menuHeight = menuLayout.getMeasuredHeight();
-
-		int shadowWidth = Display.dip2px(context, 10);
-		ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-				menuWidth + shadowWidth, menuHeight + shadowWidth);
-		menuLayout.setPadding(shadowWidth / 2,shadowWidth / 2,shadowWidth / 2,shadowWidth / 2);
-		menuLayout.setLayoutParams(layoutParams);
-		GradientDrawable drawable = new GradientDrawable();
-		drawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-		drawable.setGradientRadius((float) Math.sqrt(layoutParams.width * layoutParams.width + layoutParams.height * layoutParams.height)
-				/2);
-		drawable.setGradientCenter(0.5f, 0.5f);
-		drawable.setShape(GradientDrawable.RECTANGLE);
-		drawable.setOrientation(GradientDrawable.Orientation.BR_TL);
-		int[] colors = new int[3];
-		colors[0] = Color.parseColor("#00969696");
-		colors[1] = Color.parseColor("#7EDEDEDE");
-		colors[2] = Color.parseColor("#00FFFFFF");
-		drawable.setColors(colors);
-		menuLayout.setBackground(drawable);
 		setContentView(menuLayout);
-		setWidth(layoutParams.width);
-		setHeight(layoutParams.height);
+		setWidth(menuWidth);
+		setHeight(menuHeight);
 
 	}
 
