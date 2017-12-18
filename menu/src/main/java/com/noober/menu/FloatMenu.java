@@ -216,6 +216,14 @@ public class FloatMenu extends PopupWindow{
 		a.recycle();
 	}
 
+	private void readGroup(AttributeSet attrs) {
+		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MenuItem);
+		CharSequence itemTitle = a.getText(R.styleable.MenuItem_menu_title);
+//		int itemIconResId = a.getResourceId(R.styleable.MenuItem_icon, 0);
+		menuItemList.add(String.valueOf(itemTitle));
+		a.recycle();
+	}
+
 	public void show(Point point){
 		clickX = point.x;
 		clickY = point.y;
