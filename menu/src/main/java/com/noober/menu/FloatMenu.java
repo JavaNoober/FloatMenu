@@ -50,7 +50,7 @@ public class FloatMenu extends PopupWindow{
 	private final int VERTICAL_OFFSET;
 
 	private Context context;
-	private List<String> menuItemList;
+	private List<MenuModel> menuItemList;
 	private View view;
 	private Point screenPoint;
 	private int clickX;
@@ -108,13 +108,18 @@ public class FloatMenu extends PopupWindow{
 	}
 
 	public void items(int itemWidth, String... items) {
-		menuItemList = Arrays.asList(items);
+		menuItemList.clear();
+		for(int i=0; i < items.length; i ++){
+			MenuModel menuModel = new MenuModel();
+			menuModel.setItem(items[i]);
+			menuItemList.add(menuModel);
+		}
 		generateLayout(itemWidth);
 	}
 
 	private void generateLayout(int itemWidth) {
 		menuLayout = new LinearLayout(context);
-		menuLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_shadow));
+		menuLayout.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_shadow));
 		menuLayout.setOrientation(LinearLayout.VERTICAL);
 		int padding = Display.dip2px(context, 12);
 		for(int i = 0; i < menuItemList.size(); i ++){
@@ -126,7 +131,11 @@ public class FloatMenu extends PopupWindow{
 			textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
 			textView.setTextSize(15);
 			textView.setTextColor(Color.BLACK);
-			textView.setText(menuItemList.get(i));
+			MenuModel menuModel = menuItemList.get(i);
+			if(menuModel.getItemResId() != View.NO_ID){
+				textView.setCompoundDrawables(ContextCompat.getDrawable(context, R.drawable.ic_menu), null, null, null);
+			}
+			textView.setText(menuModel.getItem());
 			if(onItemClickListener != null){
 				textView.setOnClickListener(new ItemOnClickListener(i));
 			}
@@ -211,8 +220,13 @@ public class FloatMenu extends PopupWindow{
 	private void readItem(AttributeSet attrs) {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MenuItem);
 		CharSequence itemTitle = a.getText(R.styleable.MenuItem_menu_title);
-//		int itemIconResId = a.getResourceId(R.styleable.MenuItem_icon, 0);
-		menuItemList.add(String.valueOf(itemTitle));
+		int itemIconResId = a.getResourceId(R.styleable.MenuItem_icon, View.NO_ID);
+		MenuModel menu = new MenuModel();
+		menu.setItem(String.valueOf(itemTitle));
+		if(itemIconResId != View.NO_ID){
+			menu.setItemResId(itemIconResId);
+		}
+		menuItemList.add(menu);
 		a.recycle();
 	}
 
@@ -220,7 +234,7 @@ public class FloatMenu extends PopupWindow{
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MenuItem);
 		CharSequence itemTitle = a.getText(R.styleable.MenuItem_menu_title);
 //		int itemIconResId = a.getResourceId(R.styleable.MenuItem_icon, 0);
-		menuItemList.add(String.valueOf(itemTitle));
+//		menuItemList.add(String.valueOf(itemTitle));
 		a.recycle();
 	}
 
