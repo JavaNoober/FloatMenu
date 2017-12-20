@@ -6,7 +6,7 @@ import android.view.View;
  * Created by xiaoqi on 2017/12/19.
  */
 
-public class MenuModel {
+public class MenuItem {
 
 	private String item;
 	private int itemResId = View.NO_ID;

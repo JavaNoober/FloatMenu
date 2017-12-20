@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item app:menu_title="Send to Chat" app:icon = "@drawable/ic_menu"></item>
+    <item app:menu_title="Send to Chat" app:icon = "@drawable/brush"></item>
     <item
-        app:menu_title="Add to Favorites"/>
+        app:menu_title="Add to Favorites" app:icon = "@drawable/barrage"/>
     <item
-        app:menu_title="Delete"/>
+        app:menu_title="Delete" app:icon = "@drawable/clock"/>
     <item
-        app:menu_title="More"/>
+        app:menu_title="More" app:icon = "@drawable/collection"/>
 
 </menu>
