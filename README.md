@@ -3,7 +3,7 @@ A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
 
 ##效果如下
 
-![](https://github.com/JavaNoober/FloatMenu/tree/master/floatmenu.gif)
+![](https://raw.githubusercontent.com/JavaNoober/FloatMenu/master/floatmenu.gif)
 
 ##引入方法:
 
