@@ -85,13 +85,13 @@ public class MainActivity extends AppCompatActivity {
 				MainActivity.this, android.R.layout.simple_list_item_1, itemList);
 		listView.setAdapter(myAdapter);
 
-		final FloatMenu floatMenu = new FloatMenu(MainActivity.this);
-		floatMenu.items("菜单1", "菜单2", "菜单3");
+
 
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.e("onItemClick", view.getVisibility() + "  " + position);
+				FloatMenu floatMenu = new FloatMenu(MainActivity.this);
+				floatMenu.items("菜单1", "菜单2", "菜单3");
 				floatMenu.show(point);
 			}
 		});
