@@ -1,11 +1,11 @@
 # FloatMenu
 A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
-
+[![license](https://img.shields.io/badge/license-Apache2.0-brightgreen.svg?style=flat)](https://github.com/JavaNoober/FloatMenu) [![JCenter](https://img.shields.io/badge/JCenter-FloatMenu-green.svg?style=flat)](https://bintray.com/noober/maven/FloatMenu)
 ##效果如下
 
 ![](https://raw.githubusercontent.com/JavaNoober/FloatMenu/master/floatmenu.gif)
 
-##引入方法:
+## 引入方法:
 
     dependencies {
          ....
@@ -13,7 +13,7 @@ A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
          compile 'com.noober.floatmenu:common:1.0.2'
     }
     
-##使用说明
+## 使用说明
 使用方法1:
     Activity 重写dispatchTouchEvent，并且新建一个Point对象，show的时候传入改对象
     
@@ -82,10 +82,10 @@ A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
              public void items(int itemWidth, String... items) 
              
              public void inflate(int menuRes, int itemWidth)
-###创建菜单：
+### 创建菜单：
 	
-####注意点:
-#####显示floatmenu有两种方法：
+#### 注意点:
+##### 显示floatmenu有两种方法：
 floatmenu.show(point)与floatmenu.show()的区别
 区别在于，**创建floatmenu对象的位置**，**如果使用第2种方法，创建floatmenu必须在点击事件的外面**，
 第一种则没有这种限制，如下所示:
@@ -107,6 +107,6 @@ floatmenu.show(point)与floatmenu.show()的区别
 				floatMenu.show(point);
 			}
 		});
-#####new FloatMenu(this, view) 与 new FloatMenu(this)区别
+##### new FloatMenu(this, view) 与 new FloatMenu(this)区别
 使用第二种方法创建对象在，必须重写dispatchTouchEvent
 	
