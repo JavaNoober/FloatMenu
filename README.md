@@ -1,5 +1,6 @@
 # FloatMenu
 A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
+
 [![license](https://img.shields.io/badge/license-Apache2.0-brightgreen.svg?style=flat)](https://github.com/JavaNoober/FloatMenu) [![JCenter](https://img.shields.io/badge/JCenter-FloatMenu-green.svg?style=flat)](https://bintray.com/noober/maven/FloatMenu)
 ##效果如下
 
