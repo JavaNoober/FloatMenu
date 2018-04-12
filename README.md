@@ -12,7 +12,7 @@ A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
     dependencies {
          ....
     
-         compile 'com.noober.floatmenu:common:1.0.2'
+         implementation 'com.noober.floatmenu:common:1.0.3'
     }
     
 ## 使用说明
