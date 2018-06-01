@@ -12,18 +12,19 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.noober.floatmenu.dummy.DummyContent;
 import com.noober.menu.FloatMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
 
 	private Point point = new Point();
 	private ListView listView;
 	private Button btn1;
 	private Button btn2;
-
+	private Button btnFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,18 @@ public class MainActivity extends AppCompatActivity {
 		listView = findViewById(R.id.listview);
 		btn1 = findViewById(R.id.btn_fun1);
 		btn2 = findViewById(R.id.btn_fun2);
-
+		btnFragment = findViewById(R.id.btn_fragment);
 		init1();
 		init2();
 		init3();
+		btnFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.ll_content).setVisibility(View.GONE);
+                findViewById(R.id.fl_content).setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, ItemFragment.newInstance(0)).commitAllowingStateLoss();
+            }
+        });
 	}
 
 	private void init1(){
@@ -105,4 +114,11 @@ public class MainActivity extends AppCompatActivity {
 		}
 		return super.dispatchTouchEvent(ev);
 	}
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+        FloatMenu floatMenu = new FloatMenu(MainActivity.this);
+        floatMenu.items("菜单1", "菜单2", "菜单3");
+        floatMenu.show(point);
+    }
 }
