@@ -12,7 +12,7 @@ A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
     dependencies {
          ....
     
-         implementation 'com.noober.floatmenu:common:1.0.3'
+         implementation 'com.noober.floatmenu:common:1.0.4'
     }
     
 ## 使用说明
@@ -79,7 +79,7 @@ A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
             
    方法都提供参数设置菜单的宽度:
    
-             public void items(List<MenuItem> itemList, int itemWidth)
+             public void items(List<T extends MenuItem> itemList, int itemWidth)
              
              public void items(int itemWidth, String... items) 
              

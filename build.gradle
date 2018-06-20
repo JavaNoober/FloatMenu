@@ -31,7 +31,7 @@ ext {
     userOrg = 'noober'
     groupId = 'com.noober.floatmenu'
     uploadName = 'FloatMenu'
-    publishVersion = '1.0.3'
+    publishVersion = '1.0.4'
     desc = "A menu style pop-up window that mimics WeChat"
     website = 'https://github.com/JavaNoober/FloatMenu'
 }

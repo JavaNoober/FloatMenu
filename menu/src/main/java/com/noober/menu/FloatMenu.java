@@ -117,13 +117,13 @@ public class FloatMenu extends PopupWindow{
 		generateLayout(itemWidth);
 	}
 
-	public void items(List<MenuItem> itemList) {
+	public <T extends MenuItem> void items(List<T> itemList) {
 		menuItemList.clear();
 		menuItemList.addAll(itemList);
 		generateLayout(DEFAULT_MENU_WIDTH);
 	}
 
-	public void items(List<MenuItem> itemList, int itemWidth) {
+	public <T extends MenuItem> void items(List<T> itemList, int itemWidth) {
 		menuItemList.clear();
 		menuItemList.addAll(itemList);
 		generateLayout(itemWidth);

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.noober.floatmenu.dummy.DummyContent;
 import com.noober.menu.FloatMenu;
+import com.noober.menu.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,19 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 
 	private void init1(){
 		final FloatMenu floatMenu = new FloatMenu(this, btn1);
-		floatMenu.items("菜单1", "菜单2", "菜单3");
+
+        List<TestMenuItem> itemList = new ArrayList<>();
+        TestMenuItem menuItem = new TestMenuItem();
+        menuItem.setItem("菜单1");
+        itemList.add(menuItem);
+        TestMenuItem menuItem2 = new TestMenuItem();
+        menuItem2.setItem("菜单2");
+        itemList.add(menuItem2);
+        TestMenuItem menuItem3 = new TestMenuItem();
+        menuItem3.setItem("菜单2");
+        itemList.add(menuItem3);
+//		floatMenu.items("菜单1", "菜单2", "菜单3");
+        floatMenu.items(itemList);
 		floatMenu.setOnItemClickListener(new FloatMenu.OnItemClickListener() {
 			@Override
 			public void onClick(View v, int position) {
