@@ -60,8 +60,22 @@ A menu style pop-up window that mimics WeChat。仿微信的长按菜单。
             List<String> list = new ArrayList<>();
             list.add("菜单1"); list.add("菜单2"); list.add("菜单3");
             floatMenu.items(list);
-            
-   2.menu.xml设置
+
+    2.代码设置（范型继承MenuItem即可）
+
+            List<TestMenuItem> itemList = new ArrayList<>();
+            TestMenuItem menuItem = new TestMenuItem();
+            menuItem.setItem("菜单1");
+            itemList.add(menuItem);
+            TestMenuItem menuItem2 = new TestMenuItem();
+            menuItem2.setItem("菜单2");
+            itemList.add(menuItem2);
+            TestMenuItem menuItem3 = new TestMenuItem();
+            menuItem3.setItem("菜单2");
+            itemList.add(menuItem3);
+            floatMenu.items(itemList);
+
+   3.menu.xml设置
             
             <menu xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto">
